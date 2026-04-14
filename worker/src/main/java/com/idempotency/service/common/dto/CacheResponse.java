@@ -1,4 +1,4 @@
 package com.idempotency.service.common.dto;
 
-public record CacheResponse(String cacheKey, String response) {
+public record CacheResponse(String idempotencyKey, String response) {
 }

@@ -4,7 +4,6 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.idempotency.service.business.CacheManager;
-import com.idempotency.service.common.dto.CacheResponse;
 import com.idempotency.service.common.exception.BadRequestException;
 import com.idempotency.service.common.exception.CacheException;
 import com.idempotency.service.common.exception.HashException;
@@ -51,14 +50,13 @@ public class ApiGwHandler implements Function<APIGatewayProxyRequestEvent, Mono<
                         throw new BadRequestException("Missing Idempotency-Key header");
                     }
 
-                    String cacheKey = idempotencyKey + "-" + generateHashOfBody(idempotencyKey, request.getBody());
+                    String bodyHash = generateHashOfBody(idempotencyKey, request.getBody());
 
-                    Mono<CacheResponse> response = switch (resource) {
-                        case "/idempotency/reserve" -> cacheManager.updateCache(cacheKey);
+                    return switch (resource) {
+                        case "/idempotency/reserve" -> cacheManager.reserveRequest(idempotencyKey, bodyHash);
+                        case "/idempotency/complete" -> cacheManager.completeRequest(idempotencyKey, bodyHash);
                         default -> Mono.error(new BadRequestException("Invalid Resource Path: " + resource));
                     };
-
-                    return response;
                 })
                 .flatMap(body -> Mono.fromCallable(() -> new APIGatewayProxyResponseEvent()
                                 .withStatusCode(HttpStatus.OK.value())

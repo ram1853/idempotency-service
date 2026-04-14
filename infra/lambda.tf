@@ -86,7 +86,8 @@ resource "aws_lambda_function" "idempotency-service" {
   environment {
     variables = {
         logging_level_com_idempotency_service = "INFO"
-        spring_cloud_function_definition = "apiGwHandler"
+        spring_cloud_function_definition      = "apiGwHandler"
+        cache_ttl_seconds                     = 20
     }
   }
   filename         = "${path.module}/../worker/target/idempotency-service-0.0.1-SNAPSHOT-aws.jar"
