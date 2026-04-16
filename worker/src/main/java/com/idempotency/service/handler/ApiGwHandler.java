@@ -50,7 +50,12 @@ public class ApiGwHandler implements Function<APIGatewayProxyRequestEvent, Mono<
                         throw new BadRequestException("Missing Idempotency-Key header");
                     }
 
-                    String bodyHash = generateHashOfBody(idempotencyKey, request.getBody());
+                    String body = request.getBody();
+                    if(body == null) {
+                        throw new BadRequestException("Missing Body");
+                    }
+
+                    String bodyHash = generateHashOfBody(idempotencyKey, body);
 
                     return switch (resource) {
                         case "/idempotency/reserve" -> cacheManager.reserveRequest(idempotencyKey, bodyHash);

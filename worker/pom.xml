@@ -163,6 +163,9 @@
                         </goals>
                         <configuration>
                             <excludes>
+                                <exclude>com/idempotency/service/common/config/**</exclude>
+                                <exclude>com/idempotency/service/common/dto/**</exclude>
+                                <exclude>com/idempotency/service/common/exception/**</exclude>
                                 <exclude>com/idempotency/service/IdempotencyServiceApplication.class</exclude>
                             </excludes>
                         </configuration>
