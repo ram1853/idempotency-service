@@ -3,6 +3,8 @@ name: Build and Deploy to AWS
 on:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - '**/README.md'
 
 jobs:
   build_deploy:
