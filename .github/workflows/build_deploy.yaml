@@ -24,7 +24,9 @@ jobs:
 
     - name: Prepare backend jar
       working-directory: worker
-      run: mvn clean package
+      run: | 
+        mvn clean package
+        ls -lh target
 
     - name: Make terraform.sh executable
       run: chmod +x .github/scripts/terraform.sh
