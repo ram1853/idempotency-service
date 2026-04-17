@@ -90,8 +90,8 @@ resource "aws_lambda_function" "idempotency-service" {
         cache_ttl_seconds                     = 20
     }
   }
-  filename         = "${path.module}/../worker/target/idempotency-service-0.0.1-SNAPSHOT-aws.jar"
-  source_code_hash = filebase64sha256("${path.module}/../worker/target/idempotency-service-0.0.1-SNAPSHOT-aws.jar")
+  filename         = "${path.module}/../worker/target/Idempotency-service-0.0.1-SNAPSHOT-aws.jar"
+  source_code_hash = filebase64sha256("${path.module}/../worker/target/Idempotency-service-0.0.1-SNAPSHOT-aws.jar")
 
   vpc_config {
     subnet_ids                  = [aws_subnet.private-subnet-1.id, aws_subnet.private-subnet-2.id, aws_subnet.private-subnet-3.id]
